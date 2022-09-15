@@ -34,7 +34,6 @@ class Client(object):
         super().__init__()
         self.__access_token = validate_access_token(access_token=access_token)
         self.__api_client = ApiClient(access_token=access_token)
-        self.user = UserApi(self.__api_client)
         #self.__profile = self.user.get_my_profile()
         #self.payment = PaymentApi(profile=self.__profile,api_client=self.__api_client)
 
@@ -79,7 +78,7 @@ def no_auth(username):
 		print("[-] "+username+" Does Not Exists")
 
 def authenticate():
-	access_token = Client.get_access_token(username=config['venmo.com']['username'],password=config['venmo.com']['password'])
+	access_token = Client.get_access_token(username=config['venmo.com']['username'],password=config['venmo.com']['password'], device_id=config['venmo.com']['device_id'])
 	venmo = Client(access_token=access_token)
 
 # Setting up and Making the Web Call
@@ -107,7 +106,7 @@ def GetBasicInfo(passed_user):
 		elif response.status_code==400:
 			print("That user profile doesn't exist - make sure you have it right. If you're trying to find the profile of someone, use the brute force option first")
 	except:
-		 print(str(e))
+		 print('Failed to get basic info for user')
 
 #Grab the list of friends
 def GetFriendList(passed_user):	
